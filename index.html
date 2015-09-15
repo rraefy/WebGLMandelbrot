@@ -23,33 +23,27 @@
             
             precision mediump float;
             
-            uniform vec2 u_resolution;
+            uniform vec2 u_center;
+            uniform vec2 u_span;
+            uniform int u_iterations;
 
             vec3 colormap(float p) {
                 return vec3(1.0 - abs((p - .7) * 2.0),
                             1.0 - abs((p - .6) * 3.0),
                             1.0 - abs((p - .4) * 2.0));
             }
-            
-            // TODO: Actually, do as Google maps does, keep the zoom level
-            // That would mean the input would be pixel per unit instead of span
-            vec2 fill(void) {
-                float ratio = u_resolution.x / u_resolution.y;
-                //return vec2(min(ratio, 1.0), min(1.0 / ratio, 1.0)); // Crop 
-                return vec2(max(ratio, 1.0), max(1.0 / ratio, 1.0)); // Fit
-            }
-            
+  
             void main(void) {
-                const float span = .001;
-                const vec2 center = vec2(0.275, 0.008);
                 vec2 z;
-                vec2 C = (gl_FragCoord.xy / u_resolution - vec2(.5, .5)) * span * fill() + center;
-                for (float i = 0.0; i < 1.0; i += .001) {
+                vec2 C = gl_FragCoord.xy / u_span + u_center;
+                for (int i = 0; i < 100000; i++) {
+                    if (i == u_iterations)
+                        break;
                     float zx2 = z.x * z.x;
                     float zy2 = z.y * z.y;
                     z = vec2(zx2 - zy2 + C.x, 2.0 * z.x * z.y + C.y);
                     if (zx2 + zy2 > 4.0) {
-                        gl_FragColor = vec4(colormap(i), 1.0);
+                        gl_FragColor = vec4(colormap(float(i) / float(u_iterations)), 1.0);
                         return;
                     }
                 }
