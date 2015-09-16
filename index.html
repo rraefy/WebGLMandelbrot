@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Testing WebGL</title>
+        <title>Mandelbrot Set Browser</title>
         <style>
             html, body, canvas {
                 height: 100%;
@@ -23,10 +23,10 @@
             
             precision mediump float;
             
-            uniform vec2 u_center;
-            uniform vec2 u_span;
+            uniform vec2 u_offset;
+            uniform float u_scale;
             uniform int u_iterations;
-
+            
             vec3 colormap(float p) {
                 return vec3(1.0 - abs((p - .7) * 2.0),
                             1.0 - abs((p - .6) * 3.0),
@@ -35,8 +35,8 @@
   
             void main(void) {
                 vec2 z;
-                vec2 C = gl_FragCoord.xy / u_span + u_center;
-                for (int i = 0; i < 100000; i++) {
+                vec2 C = gl_FragCoord.xy * u_scale + u_offset;
+                for (int i = 0; i < 10000; i++) {
                     if (i == u_iterations)
                         break;
                     float zx2 = z.x * z.x;
