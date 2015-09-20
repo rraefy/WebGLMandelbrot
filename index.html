@@ -10,6 +10,12 @@
                 margin: 0;
                 overflow: hidden;
             }
+            #label {
+                position: absolute;
+                top: 0;
+                color: white;
+                font-family: sans-serif;
+            }
         </style>
         <script id="vertex" type="x-shader/x-vertex">
     
@@ -35,7 +41,7 @@
   
             void main(void) {
                 vec2 z;
-                vec2 C = gl_FragCoord.xy * u_scale + u_offset;
+                vec2 C = gl_FragCoord.xy / u_scale + u_offset;
                 for (int i = 0; i < 10000; i++) {
                     if (i == u_iterations)
                         break;
@@ -54,6 +60,7 @@
     </head>
     <body>
         <canvas id="canvas"></canvas>
+        <div id="label"></div>
         <script type="text/javascript" src="webgl.js"></script>
     </body>
 </html>
