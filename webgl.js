@@ -35,23 +35,23 @@
     gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 0, 0);
 
     var dpr = window.devicePixelRatio || 1;
-    var ppu = 400;
+    var scale = 400;
     var center = [0, 0];
     var iterations = 100;
     
     canvas.onmousemove = function() {
         if (event.buttons & 1) {
-            center[0] -= event.movementX / ppu * dpr;
-            center[1] += event.movementY / ppu * dpr;
+            center[0] -= event.movementX / scale * dpr;
+            center[1] += event.movementY / scale * dpr;
             render();
         }
     };
 
     canvas.onwheel = function() {
         var delta = Math.pow(2, event.deltaY / -200);
-        ppu *= delta;
-        center[0] += (event.x * dpr - canvas.width / 2) / ppu * (1 - 1 / delta);
-        center[1] += (canvas.height / 2 - event.y * dpr) / ppu * (1 - 1 / delta);
+        scale *= delta;
+        center[0] += (event.x * dpr - canvas.width / 2) / scale * (1 - 1 / delta);
+        center[1] += (canvas.height / 2 - event.y * dpr) / scale * (1 - 1 / delta);
         render();
     };
     
@@ -64,31 +64,32 @@
     
     window.onkeypress = function() {
         var ratio = 0;
-        if (event.charCode == 61) ratio = 1.04;
-        else if (event.charCode == 45) ratio = 1/1.04;
+        if (event.charCode == 61) ratio = 1.05;
+        else if (event.charCode == 45) ratio = 1/1.05;
         if (ratio) {
             iterations = Math.max(2, Math.min(iterations * ratio, 1000));
             render();
         }
-    }
+    };
     
     function render() {
         window.cancelAnimationFrame(render.requestId);
-        gl.uniform2f(u_offset, center[0] - canvas.width / 2 / ppu, center[1] - canvas.height / 2 / ppu);
-        gl.uniform1f(u_scale, 1 / ppu);
+        gl.uniform2f(u_offset, center[0] - canvas.width / 2 / scale, 
+                               center[1] - canvas.height / 2 / scale);
+        gl.uniform1f(u_scale, scale);
         gl.uniform1i(u_iterations, iterations);
         render.requestId = window.requestAnimationFrame(function() {
              gl.drawArrays(gl.TRIANGLES, 0, 6);
         });
         updateLabel();
-    }
+    };
     
     var label = document.getElementById("label");
     function updateLabel() {
         label.innerHTML = [
             ["iter: " + iterations.toFixed(0)],
             ["center: " + center[0].toFixed(10) + ", " + center[1].toFixed(10)],
-            ["zoom: " + (Math.log(ppu / 400) / Math.log(2)).toFixed(1)]
+            ["zoom: " + (Math.log(scale / 400) / Math.log(2)).toFixed(1)]
         ].join("<br>");
-    }
+    };
 })();
