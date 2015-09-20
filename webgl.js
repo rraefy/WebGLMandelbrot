@@ -48,7 +48,10 @@
     };
 
     canvas.onwheel = function() {
-        ppu *= Math.pow(2, event.deltaY / -200);
+        var delta = Math.pow(2, event.deltaY / -200);
+        ppu *= delta;
+        center[0] += (event.x * dpr - canvas.width / 2) / ppu * (1 - 1 / delta);
+        center[1] += (canvas.height / 2 - event.y * dpr) / ppu * (1 - 1 / delta);
         render();
     };
     
