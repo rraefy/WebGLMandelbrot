@@ -10,6 +10,12 @@
                 margin: 0;
                 overflow: hidden;
             }
+            #label {
+                position: absolute;
+                top: 0;
+                color: white;
+                font-family: sans-serif;
+            }
         </style>
         <script id="vertex" type="x-shader/x-vertex">
     
@@ -54,6 +60,7 @@
     </head>
     <body>
         <canvas id="canvas"></canvas>
+        <div id="label"></div>
         <script type="text/javascript" src="webgl.js"></script>
     </body>
 </html>

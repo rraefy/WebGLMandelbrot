@@ -77,5 +77,15 @@
         render.requestId = window.requestAnimationFrame(function() {
              gl.drawArrays(gl.TRIANGLES, 0, 6);
         });
+        updateLabel();
+    }
+    
+    var label = document.getElementById("label");
+    function updateLabel() {
+        label.innerHTML = [
+            ["iter: " + iterations.toFixed(0)],
+            ["center: " + center[0].toFixed(10) + ", " + center[1].toFixed(10)],
+            ["zoom: " + (Math.log(ppu / 400) / Math.log(2)).toFixed(1)]
+        ].join("<br>");
     }
 })();
