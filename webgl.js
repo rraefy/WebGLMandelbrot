@@ -50,8 +50,8 @@
     canvas.onwheel = function() {
         var delta = Math.pow(2, event.deltaY / -200);
         scale *= delta;
-        center[0] += (event.x * dpr - canvas.width / 2) / scale * (1 - 1 / delta);
-        center[1] += (canvas.height / 2 - event.y * dpr) / scale * (1 - 1 / delta);
+        center[0] -= (canvas.width / 2 - event.x * dpr) * (delta - 1) / scale;
+        center[1] += (canvas.height / 2 - event.y * dpr) * (delta - 1) / scale;
         render();
     };
     
