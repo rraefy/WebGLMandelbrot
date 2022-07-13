@@ -1,7 +1,7 @@
 # WebGLMandelbrot
 Mandelbrot Set fractal rendered in WebGL.
 
-Check the live demo at http://rafaelreyesalvarez.github.io/WebGLMandelbrot/
+Check the live demo at http://rraefy.github.io/WebGLMandelbrot/
 
 ![Screenshot](Screenshot.png "Screenshot")
 
